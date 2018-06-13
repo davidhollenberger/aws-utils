@@ -1,18 +1,26 @@
-
+from collections import defaultdict
 import argparse
 import boto3
+import datetime
 import sys
+import pytz
 
 
 parser = argparse.ArgumentParser(
     description="Shows summary about 'Reserved' and 'On-demand' ec2 instances")
 
-parser.add_argument("--region", type=str, default="us-east-1",
+parser.add_argument("-r", "--region", type=str, default="us-east-1",
                     help="AWS Region name. Default is 'us-east-1'")
-parser.add_argument("-w", "--warn-time", type=int, default=30,
-                    help="Expire period for reserved instances in days. "
+
+parser.add_argument("-f", "--forecast", type=int, default=30,
+                    help="Forecast RI coverage this many days from now. "
                          "Default is '30 days'")
+
 args = parser.parse_args()
+
+timezone = pytz.timezone("UTC")
+forecast_date = timezone.localize(datetime.datetime.utcnow() + datetime.timedelta(days=args.forecast))
+
 
 filters = [{'Name': 'instance-state-name', 'Values': ['running']}]
 
@@ -120,20 +128,20 @@ reservations = ec2_client.describe_reserved_instances(
     Filters=filters
 )
 
-ri_total = {}
+ri_total = defaultdict(int)
 
 reserved_instances = {}
-print("Reserved Instances")
-for ri in reservations['ReservedInstances']:
-    instance_type = ri['InstanceType'].split(".")
-    family = instance_type[0]
-    size = instance_type[1]
-    print(family, size, ri['InstanceCount'])
 
-    if family in ri_total:
-        ri_total[family] += ri_normalization_factor[size]
-    else:
-        ri_total[family] = ri_normalization_factor[size]
+print("Reserved Instances on ", forecast_date)
+
+for ri in reservations['ReservedInstances']:
+    if ri['End'] > forecast_date:
+        instance_type = ri['InstanceType'].split(".")
+        family = instance_type[0]
+        size = instance_type[1]
+        print(family, size, ri['InstanceCount'], ri['InstanceCount'] * ri_normalization_factor[size])
+
+        ri_total[family] += ri['InstanceCount'] * ri_normalization_factor[size]
 
 
 print(ri_total)
@@ -156,7 +164,7 @@ for key,value in od_total.items():
 
             #calculate what needs to be purchased to reach 80% RI coverage
             ritarget = .8 * od_total[key] - ri_total[key]
-            print("80% target: ",ritarget)
+            print("80% target: ", .8 * od_total[key] - ri_total[key])
 
             # for k, v in sorted(ri_normalization_factor.items(), key=lambda (k,v): (v,k), reverse=True):
             #     if v <= ritarget:
