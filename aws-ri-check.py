@@ -60,6 +60,7 @@ instance_types = {
 'm3': ['2xlarge', 'large', 'medium', 'xlarge'],
 'm4': ['10xlarge', '16xlarge', '2xlarge', '4xlarge', 'large', 'xlarge'],
 'm5': ['12xlarge', '24xlarge', '2xlarge', '4xlarge', 'large', 'xlarge'],
+'m5d': ['12xlarge', '24xlarge', '2xlarge', '4xlarge', 'large', 'xlarge'],
 'p2': ['16xlarge', '8xlarge', 'xlarge'],
 'p3': ['16xlarge', '2xlarge', '8xlarge'],
 'r3': ['2xlarge', '4xlarge', '8xlarge', 'large', 'xlarge'],
