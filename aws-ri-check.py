@@ -179,6 +179,7 @@ for key,value in od_total.items():
     else:
         ricoverage = 0
         print("No reserved instances.  Needs ",od_total[key],"RI normalized credits")
+        print("80% target: ", .8 * od_total[key] - ri_total[key])
 
 
     print("")
