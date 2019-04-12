@@ -32,11 +32,9 @@ instances = ec2_resource.instances.filter(
     Filters=filters
 )
 
-envs = ['lab', 'nonprod', 'prod']
 iterm_instances = {}
 
 for i in instances:
-    # print(next((item for item in i.tags if item["Key"] == "Name"), None))
     iterm_instances[i.id] = {}
     iterm_instances[i.id]['instance_type'] = i.instance_type
     iterm_instances[i.id]['private_ip_address'] = i.private_ip_address
@@ -67,17 +65,15 @@ for i in instances:
             iterm_instances[i.id]['name'] = name
 
 
-for key, value in iterm_instances.items():
-  print('ec2_id: '+key)
-  print('  name: '+value['name'])
-  print('  env:  '+value['environment'])
-  print('  ip: '+value['private_ip_address'])
-
-
+# for key, value in iterm_instances.items():
+#   print('ec2_id: '+key)
+#   print('  name: '+value['name'])
+#   print('  env:  '+value['environment'])
+#   print('  ip: '+value['private_ip_address'])
 
     # print(i.id, i.instance_type, i.private_ip_address, i.key_name, environment, name)
 
-
+# Template iTerm Dynamic Profile
 templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
 templateEnv = jinja2.Environment(loader=templateLoader)
 TEMPLATE_FILE = "dynamic_profile.j2"
@@ -86,6 +82,5 @@ dest_path = os.path.expanduser('~/Library/Application Support/iTerm2/DynamicProf
 template.stream(iterm_instances=iterm_instances, ssh_user=ssh_user, region=region).dump(dest_path+'aws_profile')
 
 
-outputText = template.render(iterm_instances=iterm_instances, ssh_user=ssh_user, region=region)
-
+# outputText = template.render(iterm_instances=iterm_instances, ssh_user=ssh_user, region=region)
 #print(outputText)
