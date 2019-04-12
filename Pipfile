@@ -8,6 +8,7 @@ name = "pypi"
 passlib = "*"
 awscli = "*"
 pytz = "*"
+"jinja2" = "*"
 
 [dev-packages]
 "flake8" = "*"
