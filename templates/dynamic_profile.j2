@@ -1,0 +1,17 @@
+{
+  "Profiles": [
+{% for key, value in iterm_instances.items() %}
+    {
+       "Name": "{{ value['name'] }}",
+       "Guid": "{{ key }}",
+       "Custom Command" : "Yes",
+       "Command" : "ssh {{ ssh_user }}@{{ value['private_ip_address'] }}",
+       "Tags" : [
+            "{{ key }}",
+            "{{ region }}"
+         ],
+       "Dynamic Profile Parent Name": "aws_{{ value['environment']}}"
+    },
+{% endfor %}
+  ]
+}
