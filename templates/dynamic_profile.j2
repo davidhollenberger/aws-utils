@@ -5,7 +5,7 @@
        "Name": "{{ value['name'] }}",
        "Guid": "{{ key }}",
        "Custom Command" : "Yes",
-       "Command" : "ssh {{ ssh_user }}@{{ value['private_ip_address'] }}",
+       "Command" : "ssh -Y {{ ssh_user }}@{{ value['private_ip_address'] }}",
        "Tags" : [
             "{{ key }}",
             "{{ region }}"
