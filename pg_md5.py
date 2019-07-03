@@ -13,18 +13,18 @@ def main():
     args = parser.parse_args()
 
     print("username: ", args.user)
-    
+
     if args.newpass:
         #https://stackoverflow.com/questions/3854692/generate-password-in-python
         alphabet = string.ascii_letters + string.digits
         password = ''.join(secrets.choice(alphabet) for i in range(20)) # for a 20-character password
-        md5 = postgres_context.encrypt(password, user=args.user)
+        md5 = postgres_context.hash(password, user=args.user)
         print("password: ", password)
         print("md5: ", md5)
     else:
-        md5  =  postgres_context.encrypt(getpass.getpass(), user=args.user)
+        md5  =  postgres_context.hash(getpass.getpass(), user=args.user)
         print("md5: ", md5)
-    
+
     print('\ncreate user ', args.user,' password \'', md5, '\';\n', sep='')
 
 
