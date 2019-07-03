@@ -24,6 +24,8 @@ def main():
     else:
         md5  =  postgres_context.encrypt(getpass.getpass(), user=args.user)
         print("md5: ", md5)
+    
+    print('\ncreate user ', args.user,' password \'', md5, '\';\n', sep='')
 
 
 # Main Program
