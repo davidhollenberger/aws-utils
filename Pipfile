@@ -9,7 +9,7 @@ passlib = "*"
 awscli = "*"
 pytz = "*"
 "jinja2" = "*"
-pyyaml = "*"
+pyyaml = ">=4.2b1"
 
 [dev-packages]
 "flake8" = "*"
