@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2021-03-10
+- Fix changelog links
+
 ## [0.2.0] - 2021-03-10
 - Add changelog
 ### Iterm Profile
@@ -14,7 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2020-12-20
 - Update python and pipenv
 
-[Unreleased]: https://https://github.com/davidhollenberger/aws-utils/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/davidhollenberger/aws-utils/compare/0.2.1...HEAD
 
-[0.2.0]: https://https://github.com/davidhollenberger/aws-utils/compare/0.1.0...0.2.0
-[0.1.0]: https://https://github.com/davidhollenberger/aws-utils/releases/tag/0.1.0
+[0.2.1]: https://github.com/davidhollenberger/aws-utils/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/davidhollenberger/aws-utils/compare/0.1.0...0.2.0
+[0.1.0]: https://github.com/davidhollenberger/aws-utils/releases/tag/0.1.0
