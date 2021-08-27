@@ -6,6 +6,7 @@ import sys
 import jinja2
 from shutil import copy2
 import os
+import uuid
 
 
 
@@ -32,13 +33,17 @@ for profile_name in args.profile:
 
         session = boto3.session.Session(profile_name=profile_name, region_name=region)
 
+        # for profile in boto3.session.Session().available_profiles:
+        #     print('Available Profiles: '+profile)
+
         if profile_name in boto3.session.Session().available_profiles:
             print('Gathering ec2 facts for '+profile_name+' ('+region+')')
 
             ec2_resource = session.resource('ec2', region_name=region)
+
             instances = ec2_resource.instances.filter(Filters=filters)
-            # for instance in instances:
-            #     print (instance.id, instance.instance_type, region)
+            for instance in instances:
+                print (instance.id, instance.instance_type, region)
 
             iterm_instances = {}
 
@@ -46,6 +51,7 @@ for profile_name in args.profile:
                 iterm_instances[i.id] = {}
                 iterm_instances[i.id]['instance_type'] = i.instance_type
                 iterm_instances[i.id]['private_ip_address'] = i.private_ip_address
+                iterm_instances[i.id]['guid'] = uuid.uuid4()
 
                 for tag in i.tags:
                     if 'env'in tag['Key']:
@@ -87,7 +93,7 @@ for profile_name in args.profile:
             TEMPLATE_FILE = "dynamic_profile.j2"
             template = templateEnv.get_template(TEMPLATE_FILE)
             dest_path = os.path.expanduser('~/Library/Application Support/iTerm2/DynamicProfiles/')
-            template.stream(iterm_instances=iterm_instances, ssh_user=ssh_user, region=session.region_name).dump(dest_path+'aws_'+profile_name+'_'+session.region_name)
+            template.stream(iterm_instances=iterm_instances, ssh_user=ssh_user, region=session.region_name, profile=session.profile_name).dump(dest_path+'aws_'+profile_name+'_'+session.region_name)
 
 
         # outputText = template.render(iterm_instances=iterm_instances, ssh_user=ssh_user, region=region)

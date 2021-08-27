@@ -3,12 +3,13 @@
 {% for key, value in iterm_instances.items() %}
     {
        "Name": "{{ value['name'] }}",
-       "Guid": "{{ key }}",
+       "Guid": "{{ value['guid'] }}",
        "Custom Command" : "Yes",
        "Command" : "ssh -Y {{ ssh_user }}@{{ value['private_ip_address'] }}",
        "Tags" : [
             "{{ key }}",
-            "{{ region }}"
+            "{{ region }}",
+            "{{ profile }}"
          ],
        "Dynamic Profile Parent Name": "aws_{{ value['environment']}}"
     },
